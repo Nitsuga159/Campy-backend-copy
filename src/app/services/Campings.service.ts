@@ -84,7 +84,7 @@ export const getCampingsPorLocalidad = async (id: string): Promise<datosCamping[
 
 export const getCampingsPorId = async (id: string): Promise<datosCamping | string> => {
   const [querySql]: [querySql: datosCamping[]] = await sequelize.query(
-    `SELECT C.id,C.nombre_camping,C.descripcion_camping,C.direccion,C.telefono,C.longitud,C.latitud,C.UsuarioId AS prop_camping_Id,C.abierto_fecha_desde , C.cerrado_fecha_hasta, L.nombre AS localidad,P.nombre AS provincia,
+    `SELECT C.id,C.nombre_camping,C.descripcion_camping,C.direccion,C.telefono,C.longitud,C.latitud,C.UsuarioId AS prop_camping_Id,C.abierto_fecha_desde , C.abierto_fecha_hasta, L.nombre AS localidad,P.nombre AS provincia,
     CA.categoria,CA.cantidad_estrellas,CC.duchas,CC.baños,CC.mascotas,CC.rodantes,CC.proveduria,CC.salon_sum,CC.restaurant,CC.vigilancia,CC.pileta,CC.estacionamiento,CC.juegos_infantiles,CC.maquinas_gimnasia,CC.wifi,
     CP.techada AS parcela_techada,CP.agua_en_parcela AS parcela_agua_en_parcela,CP.iluminacion_toma_corriente AS parcela_iluminacion_toma_corriente,CP.superficie AS parcela_superficie,
     AP.descripcion_periodo,
@@ -102,11 +102,11 @@ export const getCampingsPorId = async (id: string): Promise<datosCamping | strin
 
     if(!querySql[0]) return "No hay camping con ese ID";
 
-//   const imagenesQuery = 
-//     await axios.get(`${process.env.HOST}/api/campings/imagenes/${querySql[0].id}`);
+  const imagenesQuery = 
+    await axios.get(`${process.env.HOST}/api/campings/imagenes/${querySql[0].id}`);
     
     console.log('final')
-//   querySql[0].imagenes = imagenesQuery.data;
+  querySql[0].imagenes = imagenesQuery.data;
 
   return querySql[0];
 }
