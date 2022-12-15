@@ -82,7 +82,7 @@ export const getCampingsPorLocalidad = async (id: string): Promise<datosCamping[
 
 // QUERY SOLO 1 CAMPING POR ID CON DETALLE E IMAGENES *******************
 
-export const getCampingsImagenes= async (id: number): Promise<string[]> => {
+export const getCampingsImagenes= async (id: string): Promise<string[]> => {
   const [querySql]: [querySql: datosCamping[]] = await sequelize.query(
     `SELECT C.ID,CI.url
     from Campings as C
@@ -113,7 +113,7 @@ export const getCampingsPorId = async (id: string): Promise<datosCamping | strin
 
     if(!querySql[0]) return "No hay camping con ese ID";
 
- const imagenesQuery = await getCampingsImagenes(querySql[0].id);
+ const imagenesQuery = await getCampingsImagenes(String(querySql[0].id));
     
   console.log('final')
   querySql[0].imagenes = imagenesQuery;
