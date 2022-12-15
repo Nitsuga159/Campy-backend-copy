@@ -102,11 +102,11 @@ export const getCampingsPorId = async (id: string): Promise<datosCamping | strin
 
     if(!querySql[0]) return "No hay camping con ese ID";
 
-  const imagenesQuery = 
-    await axios.get(`${process.env.HOST}/api/campings/imagenes/${querySql[0].id}`);
+//   const imagenesQuery = 
+//     await axios.get(`${process.env.HOST}/api/campings/imagenes/${querySql[0].id}`);
     
     console.log('final')
-  querySql[0].imagenes = imagenesQuery.data;
+//   querySql[0].imagenes = imagenesQuery.data;
 
   return querySql[0];
 }
@@ -185,8 +185,7 @@ export const postCampingsCreate = async ({
 await Promise.all(imagenes.map((imagen) => 
  sequelize.query(   
   `INSERT INTO Camping_imagenes(url,createdAt,updatedAt,CampingId) VALUES ('${imagen}',NOW(),NOW(),${CampingId})`
-
-)
+ )
 ))
 
 
