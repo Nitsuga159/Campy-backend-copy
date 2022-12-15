@@ -82,6 +82,17 @@ export const getCampingsPorLocalidad = async (id: string): Promise<datosCamping[
 
 // QUERY SOLO 1 CAMPING POR ID CON DETALLE E IMAGENES *******************
 
+const getCampingsImagenes= async (id: string): Promise<string[]> => {
+  const [querySql]: [querySql: datosCamping[]] = await sequelize.query(
+    `SELECT C.ID,CI.url
+    from Campings as C
+    INNER JOIN Camping_imagenes AS CI ON CI.CampingId=C.id
+    WHERE C.habilitado=1 AND C.id=${id}`
+  );
+
+  return querySql.map((query: any):string => query.url);
+}
+
 export const getCampingsPorId = async (id: string): Promise<datosCamping | string> => {
   const [querySql]: [querySql: datosCamping[]] = await sequelize.query(
     `SELECT C.id,C.nombre_camping,C.descripcion_camping,C.direccion,C.telefono,C.longitud,C.latitud,C.UsuarioId AS prop_camping_Id,C.abierto_fecha_desde , C.abierto_fecha_hasta, L.nombre AS localidad,P.nombre AS provincia,
@@ -102,11 +113,10 @@ export const getCampingsPorId = async (id: string): Promise<datosCamping | strin
 
     if(!querySql[0]) return "No hay camping con ese ID";
 
-//   const imagenesQuery = 
-//     await axios.get(`${process.env.HOST}/api/campings/imagenes/${querySql[0].id}`);
+ const imagenesQuery = await getCampingsImagenes(querySql[0].id);
     
-    console.log('final')
-//   querySql[0].imagenes = imagenesQuery.data;
+  console.log('final')
+  querySql[0].imagenes = imagenesQuery;
 
   return querySql[0];
 }
@@ -139,17 +149,6 @@ export const getCampingsTodos = async (): Promise<datosCamping[] > => {
   });
 
   return results;
-}
-
-export const getCampingsImagenes= async (id: string): Promise<string[]> => {
-  const [querySql]: [querySql: datosCamping[]] = await sequelize.query(
-    `SELECT C.ID,CI.url
-    from Campings as C
-    INNER JOIN Camping_imagenes AS CI ON CI.CampingId=C.id
-    WHERE C.habilitado=1 AND C.id=${id}`
-  );
-
-  return querySql.map((query: any):string => query.url);
 }
 
 
