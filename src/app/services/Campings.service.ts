@@ -104,7 +104,9 @@ export const getCampingsPorId = async (id: string): Promise<datosCamping | strin
 
   const imagenesQuery = 
     await axios.get(`${process.env.HOST}/api/campings/imagenes/${querySql[0].id}`);
-
+    
+    console.log("axios", imagenesQuery)
+    console.log("axios data", imagenesQuery.data)
   querySql[0].imagenes = imagenesQuery.data;
 
   return querySql[0];
